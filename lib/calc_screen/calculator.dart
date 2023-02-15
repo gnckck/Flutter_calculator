@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_calculator/bloc/calculator_bloc.dart';
-import 'package:flutter_calculator/calc_widget/sub_result.dart';
 import '../calc_widget/calc_button.dart';
 import '../calc_widget/result_labels.dart';
 
@@ -45,7 +44,7 @@ class Calculator extends StatelessWidget {
                     ),
                     CalculatorButton(
                       text: '%',
-                      onPressed: () => calculatorBloc.add(AddNum('%')),
+                      onPressed: () => calculatorBloc.add(AddOper('%')),
                     ),
                     CalculatorButton(
                       text: 'CE',
@@ -70,7 +69,7 @@ class Calculator extends StatelessWidget {
                     ),
                     CalculatorButton(
                       text: 'x',
-                      onPressed: () => calculatorBloc.add(AddNum('X')),
+                      onPressed: () => calculatorBloc.add(AddOper('x')),
                     ),
                   ],
                 ),
@@ -91,7 +90,7 @@ class Calculator extends StatelessWidget {
                     ),
                     CalculatorButton(
                       text: '÷',
-                      onPressed: () => calculatorBloc.add(AddNum('÷')),
+                      onPressed: () => calculatorBloc.add(AddOper('÷')),
                     ),
                   ],
                 ),
@@ -112,7 +111,7 @@ class Calculator extends StatelessWidget {
                     ),
                     CalculatorButton(
                       text: '-',
-                      onPressed: () => calculatorBloc.add(AddNum('-')),
+                      onPressed: () => calculatorBloc.add(AddOper('-')),
                     ),
                   ],
                 ),
@@ -129,11 +128,11 @@ class Calculator extends StatelessWidget {
                     ),
                     CalculatorButton(
                       text: '=',
-                      onPressed: () => calculatorBloc.add(AddNum('=')),
+                      onPressed: () => calculatorBloc.add(AddOper('=')),
                     ),
                     CalculatorButton(
                       text: '+',
-                      onPressed: () => calculatorBloc.add(AddNum('+')),
+                      onPressed: () => calculatorBloc.add(AddOper('+')),
                     ),
                   ],
                 ),
