@@ -16,9 +16,8 @@ class ResultLables extends StatelessWidget {
             // SubResult(text: state.firstNum),
             // SubResult(text: state.operation),
             // SubResult(text: state.secondNum),
-            SubResultScreen(
-                text: state.firstNum + state.operation + state.secondNum),
-            ResultScreen(text: state.resultText),
+            SubResultScreen(text: state.subExpression),
+            ResultScreen(text: state.mainExpression),
             // ResultScreen 처럼 위에 계산식 스크린도 만들어야함!!
           ],
         );

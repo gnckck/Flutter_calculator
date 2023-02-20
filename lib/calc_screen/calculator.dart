@@ -44,7 +44,7 @@ class Calculator extends StatelessWidget {
                     ),
                     CalculatorButton(
                       text: '%',
-                      onPressed: () => calculatorBloc.add(AddOper('%')),
+                      onPressed: () => calculatorBloc.add(AddOperator('%')),
                     ),
                     CalculatorButton(
                       text: 'CE',
@@ -69,7 +69,7 @@ class Calculator extends StatelessWidget {
                     ),
                     CalculatorButton(
                       text: 'x',
-                      onPressed: () => calculatorBloc.add(AddOper('x')),
+                      onPressed: () => calculatorBloc.add(AddOperator('x')),
                     ),
                   ],
                 ),
@@ -90,7 +90,7 @@ class Calculator extends StatelessWidget {
                     ),
                     CalculatorButton(
                       text: '÷',
-                      onPressed: () => calculatorBloc.add(AddOper('÷')),
+                      onPressed: () => calculatorBloc.add(AddOperator('÷')),
                     ),
                   ],
                 ),
@@ -111,7 +111,7 @@ class Calculator extends StatelessWidget {
                     ),
                     CalculatorButton(
                       text: '-',
-                      onPressed: () => calculatorBloc.add(AddOper('-')),
+                      onPressed: () => calculatorBloc.add(AddOperator('-')),
                     ),
                   ],
                 ),
@@ -128,11 +128,11 @@ class Calculator extends StatelessWidget {
                     ),
                     CalculatorButton(
                       text: '=',
-                      onPressed: () => calculatorBloc.add(AddOper('=')),
+                      onPressed: () => calculatorBloc.add(ResultOperator()),
                     ),
                     CalculatorButton(
                       text: '+',
-                      onPressed: () => calculatorBloc.add(AddOper('+')),
+                      onPressed: () => calculatorBloc.add(AddOperator('+')),
                     ),
                   ],
                 ),

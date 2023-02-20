@@ -10,7 +10,9 @@ class AddNum extends CalculatorEvent {
   AddNum(this.number);
 }
 
-class AddOper extends CalculatorEvent {
+class AddOperator extends CalculatorEvent {
   final String operator;
-  AddOper(this.operator);
+  AddOperator(this.operator);
 }
+
+class ResultOperator extends CalculatorEvent {}
