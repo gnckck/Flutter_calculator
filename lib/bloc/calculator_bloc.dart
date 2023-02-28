@@ -8,16 +8,17 @@ part 'calculator_state.dart';
 class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
   CalculatorBloc() : super(CalculatorState()) {
     List<String> operator = ['+', '-', '÷', '×', '%'];
-    // int defaultLength = 1;
+    int minimumLength = 1;
+    String initialize = '0';
     on<RemoveNum>((event, emit) => emit(state.copyWith(
-          mainExpression: (state.mainExpression.length == 1)
-              ? '0'
+          mainExpression: (state.mainExpression.length == minimumLength)
+              ? initialize
               : state.mainExpression
                   .substring(0, state.mainExpression.length - 1),
         )));
 
     on<AddNum>((event, emit) {
-      if (state.mainExpression == '0') {
+      if (state.mainExpression == initialize) {
         return emit(state.copyWith(
             subExpression: 'Ans = 0', mainExpression: event.number));
       }
