@@ -10,23 +10,24 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     List<String> operator = ['+', '-', '÷', '×', '%'];
     // int defaultLength = 1;
     on<RemoveNum>((event, emit) => emit(state.copyWith(
-          mainExpression: ((state.mainExpression).length == 1)
+          mainExpression: (state.mainExpression.length == 1)
               ? '0'
-              : (state.mainExpression)
-                  .substring(0, (state.mainExpression).length - 1),
+              : state.mainExpression
+                  .substring(0, state.mainExpression.length - 1),
         )));
+
     on<AddNum>((event, emit) {
       if (state.mainExpression == '0') {
-        emit(state.copyWith(
+        return emit(state.copyWith(
             subExpression: 'Ans = 0', mainExpression: event.number));
-      } else if (state.mainExpression == state.mainResultText.toString()) {
-        emit(state.copyWith(
-            subExpression: 'Ans = ${state.mainResultText}',
-            mainExpression: event.number));
-      } else {
-        emit(state.copyWith(
-            mainExpression: state.mainExpression + event.number));
       }
+      if (state.mainExpression == state.result.toString()) {
+        return emit(state.copyWith(
+            subExpression: 'Ans = ${state.result}',
+            mainExpression: event.number));
+      }
+      return emit(
+          state.copyWith(mainExpression: state.mainExpression + event.number));
     });
 
     on<AddOperator>((event, emit) {
@@ -37,9 +38,9 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
         return emit(
             state.copyWith(mainExpression: splitText.join() + event.operator));
       }
-      if (state.mainExpression == state.mainResultText.toString()) {
+      if (state.mainExpression == state.result.toString()) {
         return emit(state.copyWith(
-            subExpression: 'Ans = ${state.mainResultText}',
+            subExpression: 'Ans = ${state.result}',
             mainExpression: state.mainExpression + event.operator));
       }
       return emit(state.copyWith(
@@ -53,7 +54,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
       if (!operator.any((e) => e == splitText.last)) {
         emit(state.copyWith(
           subExpression: '${state.mainExpression} =',
-          mainExpression: state.mainResultText.toString(),
+          mainExpression: state.result.toString(),
         ));
       } else {
         return;
@@ -137,11 +138,11 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
 
       List<String> expression = postfix(state.mainExpression, regExpExpression);
 
-      double result = postfixCalculate(expression);
+      double resultText = postfixCalculate(expression);
 
       emit(state.copyWith(
-        mainResultText: result,
-        mainExpression: result.toString(),
+        result: resultText,
+        mainExpression: resultText.toString(),
       ));
     });
   }
