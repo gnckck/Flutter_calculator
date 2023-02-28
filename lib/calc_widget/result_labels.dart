@@ -13,12 +13,8 @@ class ResultLables extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            // SubResult(text: state.firstNum),
-            // SubResult(text: state.operation),
-            // SubResult(text: state.secondNum),
             SubResultScreen(text: state.subExpression),
             ResultScreen(text: state.mainExpression),
-            // ResultScreen 처럼 위에 계산식 스크린도 만들어야함!!
           ],
         );
       },

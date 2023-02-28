@@ -10,7 +10,15 @@ class Calculator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final calculatorBloc = BlocProvider.of<CalculatorBloc>(context);
-
+    // List numbers = List.generate(10, ((index) => index.toString()));
+    // numbers.map(
+    //   (e) => CalculatorButton(
+    //     text: e,
+    //     onPressed: () => calculatorBloc.add(
+    //       AddNum(e),
+    //     ),
+    //   ),
+    // );
     return Scaffold(
       appBar: AppBar(
         title: const Text('투박한 계산기'),
@@ -69,7 +77,7 @@ class Calculator extends StatelessWidget {
                     ),
                     CalculatorButton(
                       text: 'x',
-                      onPressed: () => calculatorBloc.add(AddOperator('x')),
+                      onPressed: () => calculatorBloc.add(AddOperator('×')),
                     ),
                   ],
                 ),
