@@ -19,6 +19,27 @@ class Calculator extends StatelessWidget {
     //     ),
     //   ),
     // );
+
+    // getEvent(String keyPad){
+    //   if(isDigit(keyPad)){
+    //     return AddNum(keyPad);
+    //   }
+    //   if(isOperator(keyPad))
+    //     return AddOperator(operator)
+    // }
+
+    // ['0','1','+'].map((e) => CalculatorButton(
+    //   text: e,
+    //   onPressed: () => calculatorBloc.add(getEvent(e)!),
+    // ));
+    // const ['(',')','%','CE','7']
+    // keypads.map
+
+    ['(', ')', '%', 'CE'].map((e) => CalculatorButton(
+          text: e,
+          onPressed: () => calculatorBloc.add(KeyPressed(e)),
+        ));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('투박한 계산기'),
@@ -39,6 +60,8 @@ class Calculator extends StatelessWidget {
                   child: Container(),
                 ),
                 const ResultLables(), // 결과창
+                // GridView.count(crossAxisCount: 4, children: keypads.map(...).toList(),)
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
