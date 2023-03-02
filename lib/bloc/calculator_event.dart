@@ -16,8 +16,3 @@ class AddOperator extends CalculatorEvent {
 }
 
 class ResultOperator extends CalculatorEvent {}
-
-class KeyPressed extends CalculatorEvent {
-  final String pad;
-  KeyPressed(this.pad);
-}

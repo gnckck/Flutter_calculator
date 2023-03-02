@@ -4,41 +4,57 @@ import 'package:flutter_calculator/bloc/calculator_bloc.dart';
 import '../calc_widget/calc_button.dart';
 import '../calc_widget/result_labels.dart';
 
+const List keypads = [
+  '(',
+  ')',
+  '%',
+  'CE',
+  '7',
+  '8',
+  '9',
+  '×',
+  '4',
+  '5',
+  '6',
+  '÷',
+  '1',
+  '2',
+  '3',
+  '-',
+  '0',
+  '.',
+  '=',
+  '+'
+];
+
 class Calculator extends StatelessWidget {
   const Calculator({super.key});
 
   @override
   Widget build(BuildContext context) {
     final calculatorBloc = BlocProvider.of<CalculatorBloc>(context);
-    // List numbers = List.generate(10, ((index) => index.toString()));
-    // numbers.map(
-    //   (e) => CalculatorButton(
-    //     text: e,
-    //     onPressed: () => calculatorBloc.add(
-    //       AddNum(e),
-    //     ),
-    //   ),
-    // );
 
-    // getEvent(String keyPad){
-    //   if(isDigit(keyPad)){
-    //     return AddNum(keyPad);
-    //   }
-    //   if(isOperator(keyPad))
-    //     return AddOperator(operator)
-    // }
+    bool isDigit(String keyPad) => RegExp(r'\d').hasMatch(keyPad);
+    bool isOperator(String keyPad) => RegExp(r'[\+\-\÷\×\%]').hasMatch(keyPad);
+    bool isRemoveNum(String keyPad) => keyPad == 'CE';
+    bool isResultOperator(String keyPad) => keyPad == '=';
 
-    // ['0','1','+'].map((e) => CalculatorButton(
-    //   text: e,
-    //   onPressed: () => calculatorBloc.add(getEvent(e)!),
-    // ));
-    // const ['(',')','%','CE','7']
-    // keypads.map
+    CalculatorEvent getEvent(String keyPad) {
+      if (isDigit(keyPad)) {
+        return AddNum(keyPad);
+      }
 
-    ['(', ')', '%', 'CE'].map((e) => CalculatorButton(
-          text: e,
-          onPressed: () => calculatorBloc.add(KeyPressed(e)),
-        ));
+      if (isOperator(keyPad)) {
+        return AddOperator(keyPad);
+      }
+      if (isRemoveNum(keyPad)) {
+        return RemoveNum();
+      }
+      if (isResultOperator(keyPad)) {
+        return ResultOperator();
+      }
+      return AddNum(keyPad);
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -59,114 +75,19 @@ class Calculator extends StatelessWidget {
                   // 부모의 남은 부분은 전부 채우는 식으로 화면에 나타남
                   child: Container(),
                 ),
-                const ResultLables(), // 결과창
-                // GridView.count(crossAxisCount: 4, children: keypads.map(...).toList(),)
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CalculatorButton(
-                      text: '(',
-                      onPressed: () => calculatorBloc.add(AddNum('(')),
-                    ),
-                    CalculatorButton(
-                      text: ')',
-                      onPressed: () => calculatorBloc.add(AddNum(')')),
-                    ),
-                    CalculatorButton(
-                      text: '%',
-                      onPressed: () => calculatorBloc.add(AddOperator('%')),
-                    ),
-                    CalculatorButton(
-                      text: 'CE',
-                      onPressed: () => calculatorBloc.add(RemoveNum()),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CalculatorButton(
-                      text: '7',
-                      onPressed: () => calculatorBloc.add(AddNum('7')),
-                    ),
-                    CalculatorButton(
-                      text: '8',
-                      onPressed: () => calculatorBloc.add(AddNum('8')),
-                    ),
-                    CalculatorButton(
-                      text: '9',
-                      onPressed: () => calculatorBloc.add(AddNum('9')),
-                    ),
-                    CalculatorButton(
-                      text: 'x',
-                      onPressed: () => calculatorBloc.add(AddOperator('×')),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CalculatorButton(
-                      text: '4',
-                      onPressed: () => calculatorBloc.add(AddNum('4')),
-                    ),
-                    CalculatorButton(
-                      text: '5',
-                      onPressed: () => calculatorBloc.add(AddNum('5')),
-                    ),
-                    CalculatorButton(
-                      text: '6',
-                      onPressed: () => calculatorBloc.add(AddNum('6')),
-                    ),
-                    CalculatorButton(
-                      text: '÷',
-                      onPressed: () => calculatorBloc.add(AddOperator('÷')),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CalculatorButton(
-                      text: '1',
-                      onPressed: () => calculatorBloc.add(AddNum('1')),
-                    ),
-                    CalculatorButton(
-                      text: '2',
-                      onPressed: () => calculatorBloc.add(AddNum('2')),
-                    ),
-                    CalculatorButton(
-                      text: '3',
-                      onPressed: () => calculatorBloc.add(AddNum('3')),
-                    ),
-                    CalculatorButton(
-                      text: '-',
-                      onPressed: () => calculatorBloc.add(AddOperator('-')),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CalculatorButton(
-                      text: '0',
-                      onPressed: () => calculatorBloc.add(AddNum('0')),
-                    ),
-                    CalculatorButton(
-                      text: '.',
-                      onPressed: () => calculatorBloc.add(AddNum('.')),
-                    ),
-                    CalculatorButton(
-                      text: '=',
-                      onPressed: () => calculatorBloc.add(ResultOperator()),
-                    ),
-                    CalculatorButton(
-                      text: '+',
-                      onPressed: () => calculatorBloc.add(AddOperator('+')),
-                    ),
-                  ],
-                ),
+                const ResultLables(),
+                SizedBox(
+                  width: 500,
+                  height: 650,
+                  child: GridView.count(
+                    crossAxisCount: 4,
+                    children: keypads
+                        .map((e) => CalculatorButton(
+                            text: e,
+                            onPressed: () => calculatorBloc.add(getEvent(e))))
+                        .toList(),
+                  ),
+                )
               ],
             )),
       )),
