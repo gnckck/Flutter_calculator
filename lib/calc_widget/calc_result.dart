@@ -8,9 +8,9 @@ class ResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.centerRight, // 오른쪽 끝
+      alignment: Alignment.centerRight,
       margin: const EdgeInsets.only(bottom: 15),
-      width: 330, // 가로 꽉차게
+      width: 330,
       child: Text(
         text,
         style: const TextStyle(fontSize: 50),
