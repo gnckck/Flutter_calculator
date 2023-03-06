@@ -27,13 +27,13 @@ const List keypads = [
   '+'
 ];
 
+bool isDigit(String keyPad) => RegExp(r'\d').hasMatch(keyPad);
+bool isOperator(String keyPad) => RegExp(r'[\+\-\÷\×\%]').hasMatch(keyPad);
+bool isRemoveNum(String keyPad) => keyPad == 'CE';
+bool isResultOperator(String keyPad) => keyPad == '=';
+
 class Calculator extends StatelessWidget {
   const Calculator({super.key});
-
-  bool isDigit(String keyPad) => RegExp(r'\d').hasMatch(keyPad);
-  bool isOperator(String keyPad) => RegExp(r'[\+\-\÷\×\%]').hasMatch(keyPad);
-  bool isRemoveNum(String keyPad) => keyPad == 'CE';
-  bool isResultOperator(String keyPad) => keyPad == '=';
 
   CalculatorEvent getEvent(String keyPad) {
     if (isDigit(keyPad)) {

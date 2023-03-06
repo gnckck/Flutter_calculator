@@ -93,16 +93,13 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
         expression.add(text);
         continue;
       }
-      // else {
+
       while (stack.isNotEmpty && precedence(stack.last) >= precedence(text)) {
         expression.add(stack.removeLast());
       }
       stack.add(text);
-      // }
     }
     return [...expression, ...stack.reversed];
-    // expression.addAll(stack.reversed);
-    // return expression;
   }
 
   int precedence(String operator) {
