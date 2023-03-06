@@ -16,7 +16,6 @@ class CalculatorButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Button
     final buttonStyle = TextButton.styleFrom(
       backgroundColor: bgColor,
       shape: const StadiumBorder(),
