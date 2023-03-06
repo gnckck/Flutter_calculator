@@ -11,41 +11,48 @@ const String initialize = '0';
 const List<String> operator = ['+', '-', '÷', '×', '%'];
 
 class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
+  String get removeLast =>
+      state.mainExpression.substring(0, state.mainExpression.length - 1);
+  bool get lastIsOperator =>
+      RegExp(r'[\+\-\÷\×\%]$').hasMatch(state.mainExpression);
+  String get beforeResult => 'Ans = ${state.result}'; // 2.
+
   CalculatorBloc() : super(CalculatorState()) {
     on<RemoveNum>((event, emit) => emit(state.copyWith(
           mainExpression: (state.mainExpression.length == minimumLength)
               ? initialize
-              : state.mainExpression
-                  .substring(0, state.mainExpression.length - 1),
+              : removeLast,
         )));
 
     on<AddNum>((event, emit) {
-      if (state.mainExpression == initialize) {
-        return emit(state.copyWith(
-            subExpression: 'Ans = 0', mainExpression: event.number));
-      }
-      if (state.mainExpression == state.result.toString()) {
-        return emit(state.copyWith(
-            subExpression: 'Ans = ${state.result}',
-            mainExpression: event.number));
+      if (state.mainExpression == initialize || // 1.
+          state.mainExpression == state.result.toString()) {
+        return emit(
+          state.copyWith(
+            subExpression: beforeResult,
+            mainExpression: event.number,
+          ),
+        );
       }
       return emit(
-          state.copyWith(mainExpression: state.mainExpression + event.number));
+        state.copyWith(mainExpression: state.mainExpression + event.number),
+      );
     });
 
     on<AddOperator>((event, emit) {
-      List splitText = state.mainExpression.split('');
       String newExpression = state.mainExpression + event.operator;
-
-      if (operator.any((e) => e == splitText.last)) {
-        splitText.removeLast();
+      if (lastIsOperator) {
         return emit(
-            state.copyWith(mainExpression: splitText.join() + event.operator));
+          state.copyWith(
+            mainExpression: removeLast + event.operator,
+          ),
+        );
       }
+
       if (state.mainExpression == state.result.toString()) {
         return emit(
           state.copyWith(
-            subExpression: 'Ans = ${state.result}',
+            subExpression: beforeResult,
             mainExpression: newExpression,
           ),
         );
@@ -54,18 +61,14 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     });
 
     on<ResultOperator>((event, emit) {
-      List splitText = state.mainExpression.split('');
-      RegExp regExpExpression = RegExp(r'\d+|[+×÷-]');
-
-      if (!operator.any((e) => e == splitText.last)) {
+      if (!lastIsOperator) {
         emit(state.copyWith(
           subExpression: '${state.mainExpression} =',
           mainExpression: state.result.toString(),
         ));
         List<String> expression = postfix(
           state.mainExpression,
-          regExpExpression,
-          state.subExpression,
+          RegExp(r'\d+|[+×÷-]').allMatches(state.subExpression), // 3.
         );
 
         double calculatedResult = postfixCalculate(expression);
@@ -77,50 +80,29 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
       }
     });
   }
-  // handleRemoveNumber(RemoveNum event, Emitter emit) => emit(
-  //       state.copyWith(
-  //         mainExpression: (state.mainExpression.length == minimumLength)
-  //             ? initialize
-  //             : state.mainExpression
-  //                 .substring(0, state.mainExpression.length - 1),
-  //       ),
-  //     );
-
-// List<String> postfix({
-//     required String text,
-//     required RegExp regExpExpression,
-//     required String subExpression,
-//   }) {... something}
 
   bool isDigit(String value) => RegExp(r'\d+').hasMatch(value);
 
-  List<String> postfix(
-    String text,
-    RegExp regExpExpression,
-    String subExpression,
-  ) {
+  List<String> postfix(String text, Iterable<RegExpMatch> matchesExpression) {
     List<String> expression = [];
     List<String> stack = [];
-    Iterable<RegExpMatch> matchesExpression =
-        regExpExpression.allMatches(subExpression);
-    // allMatches는 정규 표현식에서 일치하는 문자열을 찾아서 반환
-    // r은 raw string (문자 그대로)
+
     for (final RegExpMatch matchedString in matchesExpression) {
       String text = matchedString[0]!;
       if (isDigit(text)) {
         expression.add(text);
-      } else {
-        while (stack.isNotEmpty && precedence(stack.last) >= precedence(text)) {
-          expression.add(stack.removeLast());
-        }
-        stack.add(text);
+        continue;
       }
+      // else {
+      while (stack.isNotEmpty && precedence(stack.last) >= precedence(text)) {
+        expression.add(stack.removeLast());
+      }
+      stack.add(text);
+      // }
     }
-    // while (stack.isNotEmpty) {
-    //   expression.add(stack.removeLast());
-    // }
-    expression.addAll(stack.reversed);
-    return expression;
+    return [...expression, ...stack.reversed];
+    // expression.addAll(stack.reversed);
+    // return expression;
   }
 
   int precedence(String operator) {
@@ -162,9 +144,7 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
     }
     if (stack.length != 1) {
       throw const FormatException('??');
-      // throw 절을 통하여 예외 상황 발생 시 객체 또는 코드 등을 반환
-
     }
-    return stack.single; // 리스트에 단 1개의 요소만 있다면 해당 요소 리턴
+    return stack.single;
   }
 }
